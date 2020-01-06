@@ -1,12 +1,14 @@
 package com.rychkov.configserver.controllers;
 
+import com.rychkov.configserver.dtos.ConfigDto;
 import com.rychkov.configserver.entities.Config;
 import com.rychkov.configserver.services.ConfigService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @Slf4j
 @RequiredArgsConstructor
 public class MainPageController {
@@ -20,19 +22,19 @@ public class MainPageController {
 
     @RequestMapping(value = "/getCurrentConfig", method = RequestMethod.POST)
     @ResponseBody
-    public Config getCurrentConfig(){
+    public ConfigDto getCurrentConfig(){
         return configService.getCurrentConfig();
     }
 
     @RequestMapping(value = "/getNewDbConfig", method = RequestMethod.POST)
     @ResponseBody
-    public Config getNewDbConfig(){
+    public ConfigDto getNewDbConfig(){
         return configService.getNewDbConfig();
     }
 
     @RequestMapping(value = "/getNewGitConfig", method = RequestMethod.POST)
     @ResponseBody
-    public Config getNewGitConfig(){
+    public ConfigDto getNewGitConfig(){
         return configService.getNewGitConfig();
     }
 }

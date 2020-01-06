@@ -1,9 +1,10 @@
 package com.rychkov.configserver.services;
 
+import com.rychkov.configserver.dtos.ConfigDto;
 import com.rychkov.configserver.entities.Config;
 
 public interface ConfigService {
-    Config getCurrentConfig();
-    Config getNewDbConfig();
-    Config getNewGitConfig();
+    ConfigDto getCurrentConfig();
+    ConfigDto getNewDbConfig();
+    ConfigDto getNewGitConfig();
 }
