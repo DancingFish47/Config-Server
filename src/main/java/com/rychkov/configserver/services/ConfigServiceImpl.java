@@ -15,11 +15,12 @@ import java.util.Optional;
 public class ConfigServiceImpl implements ConfigService {
 
     private final ConfigRepository configRepository;
-    private Config cachedConfig;
+    private Config cachedDbConfig;
+    private String cachedGitConfig;
 
     @Override
     public ConfigDto getCurrentConfig() {
-        if (cachedConfig != null) return ConfigDto.builder().config(cachedConfig).error(false).build() ;
+        if (cachedDbConfig != null) return ConfigDto.builder().config(cachedDbConfig).error(false).build() ;
         else throw new ConfigException("Cached config not found!");
     }
 
@@ -27,19 +28,26 @@ public class ConfigServiceImpl implements ConfigService {
     public ConfigDto getNewDbConfig() {
         Optional<Config> optionalConfig = configRepository.findFirstByOrderByVersionDesc();
         if (optionalConfig.isPresent()){
-            cachedConfig = optionalConfig.get();
-            return ConfigDto.builder().config(cachedConfig).error(false).build();
+            cachedDbConfig = optionalConfig.get();
+            return ConfigDto.builder().config(cachedDbConfig).error(false).build();
         }
         else throw new ConfigException("Db config not found!");
     }
 
     @Override
-    public ConfigDto getNewGitConfig() {
-        return null;
+    public String getCurrentGitConfig() {
+        if(cachedGitConfig == null) throw new ConfigException("Git config not found!");
+        else return cachedGitConfig;
+    }
+
+    @Override
+    public void cacheGitConfig(String config){
+        cachedGitConfig = config;
     }
 
     @Scheduled(cron = "${scheduled.cron}")
     public void clearCachedConfig(){
-        cachedConfig = null;
+        cachedDbConfig = null;
+        cachedGitConfig = null;
     }
 }

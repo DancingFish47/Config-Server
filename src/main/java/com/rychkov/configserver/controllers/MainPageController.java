@@ -1,7 +1,6 @@
 package com.rychkov.configserver.controllers;
 
 import com.rychkov.configserver.dtos.ConfigDto;
-import com.rychkov.configserver.entities.Config;
 import com.rychkov.configserver.services.ConfigService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +31,13 @@ public class MainPageController {
         return configService.getNewDbConfig();
     }
 
-    @RequestMapping(value = "/getNewGitConfig", method = RequestMethod.POST)
+    @RequestMapping(value = "/cacheGitConfig", method = RequestMethod.POST)
     @ResponseBody
-    public ConfigDto getNewGitConfig(){
-        return configService.getNewGitConfig();
+    public void cacheGitConfig(@RequestBody String config){
+        configService.cacheGitConfig(config);
     }
+
+    @RequestMapping(value = "/getCurrentGitConfig", method = RequestMethod.POST)
+    @ResponseBody
+    public String getCurrentGitConfig(){ return configService.getCurrentGitConfig(); }
 }

@@ -6,5 +6,6 @@ import com.rychkov.configserver.entities.Config;
 public interface ConfigService {
     ConfigDto getCurrentConfig();
     ConfigDto getNewDbConfig();
-    ConfigDto getNewGitConfig();
+    String getCurrentGitConfig();
+    void cacheGitConfig(String config);
 }
