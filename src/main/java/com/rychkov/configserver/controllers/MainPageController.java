@@ -15,29 +15,31 @@ public class MainPageController {
     private final ConfigService configService;
 
     @GetMapping(value = "/")
-    public String mainPage(){
+    public String mainPage() {
         return "index";
     }
 
     @RequestMapping(value = "/getCurrentConfig", method = RequestMethod.POST)
     @ResponseBody
-    public ConfigDto getCurrentConfig(){
+    public ConfigDto getCurrentConfig() {
         return configService.getCurrentConfig();
     }
 
     @RequestMapping(value = "/getNewDbConfig", method = RequestMethod.POST)
     @ResponseBody
-    public ConfigDto getNewDbConfig(){
+    public ConfigDto getNewDbConfig() {
         return configService.getNewDbConfig();
     }
 
     @RequestMapping(value = "/cacheGitConfig", method = RequestMethod.POST)
     @ResponseBody
-    public void cacheGitConfig(@RequestBody String config){
+    public void cacheGitConfig(@RequestBody String config) {
         configService.cacheGitConfig(config);
     }
 
     @RequestMapping(value = "/getCurrentGitConfig", method = RequestMethod.POST)
     @ResponseBody
-    public String getCurrentGitConfig(){ return configService.getCurrentGitConfig(); }
+    public String getCurrentGitConfig() {
+        return configService.getCurrentGitConfig();
+    }
 }
