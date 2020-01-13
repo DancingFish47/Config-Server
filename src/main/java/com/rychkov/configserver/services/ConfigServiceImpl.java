@@ -20,33 +20,32 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public ConfigDto getCurrentConfig() {
-        if (cachedDbConfig != null) return ConfigDto.builder().config(cachedDbConfig).error(false).build() ;
+        if (cachedDbConfig != null) return ConfigDto.builder().config(cachedDbConfig).error(false).build();
         else throw new ConfigException("Cached config not found!");
     }
 
     @Override
     public ConfigDto getNewDbConfig() {
         Optional<Config> optionalConfig = configRepository.findFirstByOrderByVersionDesc();
-        if (optionalConfig.isPresent()){
+        if (optionalConfig.isPresent()) {
             cachedDbConfig = optionalConfig.get();
             return ConfigDto.builder().config(cachedDbConfig).error(false).build();
-        }
-        else throw new ConfigException("Db config not found!");
+        } else throw new ConfigException("Db config not found!");
     }
 
     @Override
     public String getCurrentGitConfig() {
-        if(cachedGitConfig == null) throw new ConfigException("Git config not found!");
+        if (cachedGitConfig == null) throw new ConfigException("Git config not found!");
         else return cachedGitConfig;
     }
 
     @Override
-    public void cacheGitConfig(String config){
+    public void cacheGitConfig(String config) {
         cachedGitConfig = config;
     }
 
     @Scheduled(cron = "${scheduled.cron}")
-    public void clearCachedConfig(){
+    public void clearCachedConfig() {
         cachedDbConfig = null;
         cachedGitConfig = null;
     }
