@@ -1,5 +1,3 @@
-const gitConfigUrl = 'https://api.github.com/repos/DancingFish47/Config-Server/contents/config.txt';
-
 async function getCurrentDbConfig(){
 
   let call = await fetch('/getCurrentConfig', {
@@ -41,7 +39,7 @@ async function getNewGitConfig(){
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
         }
     });
     let result = await call.json();

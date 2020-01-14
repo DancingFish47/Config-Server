@@ -1,21 +1,18 @@
 package com.rychkov.configserver.entities;
 
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "configs")
+@Document(collection = "configs")
 public class Config {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Integer id;
+    private String id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "version")
-    private Integer version;
+    private String version;
 }

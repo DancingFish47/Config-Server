@@ -8,7 +8,7 @@ public interface ConfigService {
 
     ConfigDto getNewDbConfig();
 
-    String getCurrentGitConfig();
+    ConfigDto getCurrentGitConfig();
 
-    void cacheGitConfig(String config);
+    ConfigDto getNewGitConfig();
 }

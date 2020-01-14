@@ -16,7 +16,9 @@ public class ConfigServiceImpl implements ConfigService {
 
     private final ConfigRepository configRepository;
     private Config cachedDbConfig;
-    private String cachedGitConfig;
+    private Config cachedGitConfig;
+
+    //const gitConfigUrl = 'https://api.github.com/repos/DancingFish47/Config-Server/contents/config.txt';
 
     @Override
     public ConfigDto getCurrentConfig() {
@@ -34,14 +36,14 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
-    public String getCurrentGitConfig() {
+    public ConfigDto getCurrentGitConfig() {
         if (cachedGitConfig == null) throw new ConfigException("Git config not found!");
-        else return cachedGitConfig;
+        else return ConfigDto.builder().error(false).config(cachedGitConfig).build();
     }
 
     @Override
-    public void cacheGitConfig(String config) {
-        cachedGitConfig = config;
+    public ConfigDto getNewGitConfig(){
+        return null;
     }
 
     @Scheduled(cron = "${scheduled.cron}")
