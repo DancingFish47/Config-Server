@@ -1,1 +1,1 @@
-{"config":{"id":"5e1dadf44639a90006bef507","name":"config","version":"1"},"error":false,"message":null}
+{"id":"5e1dadf44639a90006bef507","name":"config","version":"1"}
