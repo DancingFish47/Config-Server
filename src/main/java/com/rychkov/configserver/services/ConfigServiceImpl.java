@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -61,8 +62,8 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public ConfigDto getNewGitConfig() {
-        String string = restTemplate.getForObject(GIT_CONFIG_URL, String.class);
-        return ConfigDto.builder().error(true).message(string).build();
+        Config config = restTemplate.getForObject(GIT_CONFIG_URL, Config.class);
+        return ConfigDto.builder().error(false).build();
     }
 
     @Scheduled(cron = "${scheduled.cron}")
