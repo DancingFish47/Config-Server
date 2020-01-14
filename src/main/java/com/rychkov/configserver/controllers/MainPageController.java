@@ -31,15 +31,15 @@ public class MainPageController {
         return configService.getNewDbConfig();
     }
 
-    @RequestMapping(value = "/cacheGitConfig", method = RequestMethod.POST)
-    @ResponseBody
-    public void cacheGitConfig(@RequestBody String config) {
-        configService.cacheGitConfig(config);
-    }
-
     @RequestMapping(value = "/getCurrentGitConfig", method = RequestMethod.POST)
     @ResponseBody
-    public String getCurrentGitConfig() {
+    public ConfigDto getCurrentGitConfig() {
         return configService.getCurrentGitConfig();
+    }
+
+    @RequestMapping(value = "/getNewGitConfig", method = RequestMethod.POST)
+    @ResponseBody
+    public ConfigDto getNewGitConfig() {
+        return configService.getNewGitConfig();
     }
 }

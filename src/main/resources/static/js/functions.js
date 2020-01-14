@@ -35,8 +35,8 @@ async function getNewDbConfig(){
 }
 
 async function getNewGitConfig(){
-    let call = await fetch(gitConfigUrl, {
-        method: 'GET',
+    let call = await fetch("/getNewGitConfig", {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -44,12 +44,11 @@ async function getNewGitConfig(){
     });
     let result = await call.json();
 
-    if(result.content!=null){
-        document.getElementById("configGitDiv").innerHTML = atob(result.content);
-        cacheGitConfig(atob(result.content));
-    } else {
-        document.getElementById("configGitDiv").innerHTML = "Could not load config from github";
-    }
+    if(result.error){
+         document.getElementById("configGitDiv").innerHTML = result.message;
+       } else {
+         document.getElementById("configGitDiv").innerHTML = result.config.id + ' ' + result.config.name + ' ' + result.config.version;
+       }
 
 }
 
@@ -61,22 +60,11 @@ async function getCurrentGitConfig(){
             'Accept': 'application/json'
         }
     });
-    let result = await call.text();
+    let result = await call.json();
 
-    if(result!=null){
-        document.getElementById("configGitDiv").innerHTML = result;
-    } else {
-        document.getElementById("configGitDiv").innerHTML = "Could not load config from cache";
-    }
-}
-
-async function cacheGitConfig(configJson){
-    await fetch("/cacheGitConfig", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: configJson,
-    });
+    if(result.error){
+         document.getElementById("configGitDiv").innerHTML = result.message;
+       } else {
+         document.getElementById("configGitDiv").innerHTML = result.config.id + ' ' + result.config.name + ' ' + result.config.version;
+       }
 }
