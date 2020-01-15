@@ -11,7 +11,7 @@ public class Config {
     @Id
     private String id;
 
-    private String name;
+    private String applicationName;
 
-    private String version;
+    private String configVersion;
 }

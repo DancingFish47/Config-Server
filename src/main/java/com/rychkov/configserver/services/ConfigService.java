@@ -4,9 +4,9 @@ import com.rychkov.configserver.dtos.ConfigDto;
 import com.rychkov.configserver.entities.Config;
 
 public interface ConfigService {
-    ConfigDto getCurrentConfig();
+    ConfigDto getCurrentDbConfig(String configId);
 
-    ConfigDto getNewDbConfig();
+    ConfigDto getNewDbConfig(String configId);
 
     ConfigDto getCurrentGitConfig();
 

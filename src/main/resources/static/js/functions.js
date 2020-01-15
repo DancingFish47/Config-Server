@@ -1,36 +1,37 @@
-async function getCurrentDbConfig(){
-
-  let call = await fetch('/getCurrentConfig', {
+async function getCurrentDbConfig(configId){
+  let call = await fetch('/getCurrentDbConfig', {
        method: 'POST',
        headers: {
            'Content-Type': 'application/json',
            'Accept': 'application/json'
-       }
+       },
+       body: configId,
    });
 
    let result = await call.json();
 
    if(result.error){
-     document.getElementById("configDbDiv").innerHTML = result.message;
+     document.getElementById("config" + configId).innerHTML = result.message;
    } else {
-     document.getElementById("configDbDiv").innerHTML = result.config.id + ' ' + result.config.name + ' ' + result.config.version;
+     document.getElementById("config" + configId).innerHTML = result.config.id + ' ' + result.config.applicationName + ' ' + result.config.configVersion;
    }
 }
 
-async function getNewDbConfig(){
+async function getNewDbConfig(configId){
   let call = await fetch('/getNewDbConfig', {
        method: 'POST',
        headers: {
            'Content-Type': 'application/json',
            'Accept': 'application/json'
-       }
+       },
+       body: configId,
    });
    let result = await call.json();
 
    if(result.error){
-     document.getElementById("configDbDiv").innerHTML = result.message;
+     document.getElementById("config" + configId).innerHTML = result.message;
    } else {
-     document.getElementById("configDbDiv").innerHTML = result.config.id + ' ' + result.config.name + ' ' + result.config.version;
+     document.getElementById("config" + configId).innerHTML =  result.config.id + ' ' + result.config.applicationName + ' ' + result.config.configVersion;
    }
 }
 
@@ -47,7 +48,7 @@ async function getNewGitConfig(){
     if(result.error){
          document.getElementById("configGitDiv").innerHTML = result.message;
        } else {
-         document.getElementById("configGitDiv").innerHTML = result.config.id + ' ' + result.config.name + ' ' + result.config.version;
+         document.getElementById("configGitDiv").innerHTML = result.config.id + ' ' + result.config.applicationName + ' ' + result.config.configVersion;
        }
 
 }
@@ -65,6 +66,6 @@ async function getCurrentGitConfig(){
     if(result.error){
          document.getElementById("configGitDiv").innerHTML = result.message;
        } else {
-         document.getElementById("configGitDiv").innerHTML = result.config.id + ' ' + result.config.name + ' ' + result.config.version;
+         document.getElementById("configGitDiv").innerHTML = result.config.id + ' ' + result.config.applicationName + ' ' + result.config.configVersion;
        }
 }

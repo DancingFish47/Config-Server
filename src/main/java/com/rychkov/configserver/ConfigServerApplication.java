@@ -9,5 +9,4 @@ public class ConfigServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(ConfigServerApplication.class, args);
     }
-    //TODO MongoDb, json configs, relative cache expiration timer, tests.
 }

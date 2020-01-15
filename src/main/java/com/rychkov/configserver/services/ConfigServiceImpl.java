@@ -40,14 +40,14 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
-    public ConfigDto getCurrentConfig() {
+    public ConfigDto getCurrentDbConfig(String configId) {
         if (cachedDbConfig != null) return ConfigDto.builder().config(cachedDbConfig).error(false).build();
         else throw new ConfigException("Cached db config not found!");
     }
 
     @Override
-    public ConfigDto getNewDbConfig() {
-        Optional<Config> optionalConfig = configRepository.findFirstByOrderByVersionDesc();
+    public ConfigDto getNewDbConfig(String configId) {
+        Optional<Config> optionalConfig = configRepository.findByIdOrderByConfigVersionDesc(configId);
         if (optionalConfig.isPresent()) {
             cachedDbConfig = optionalConfig.get();
             return ConfigDto.builder().config(cachedDbConfig).error(false).build();
@@ -62,8 +62,8 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public ConfigDto getNewGitConfig() {
-        Config config = restTemplate.getForObject(GIT_CONFIG_URL, Config.class);
-        return ConfigDto.builder().error(false).build();
+        String config = restTemplate.getForObject(GIT_CONFIG_URL, String.class);
+        return ConfigDto.builder().error(false).message(config).build();
     }
 
     @Scheduled(cron = "${scheduled.cron}")
