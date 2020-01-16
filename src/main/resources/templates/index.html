@@ -9,18 +9,13 @@
 <div th:each="config : ${configs}">
     <div th:text="${'Application name: ' + config.applicationName}"></div>
     <p th:id="${'config' + config.id}">...</p>
-    <button th:data1="${config.id}" onclick="getCurrentDbConfig(this.getAttribute('data1'));">Get current db config</button>
-    <button th:data1="${config.id}" onclick="getNewDbConfig(this.getAttribute('data1'));">Get new config from db</button>
+    <button th:data1="${config.id}" onclick="getCurrentDbConfig(this.getAttribute('data1'));">Get current db config
+    </button>
+    <button th:data1="${config.id}" onclick="getNewDbConfig(this.getAttribute('data1'));">Get new config from db
+    </button>
     <br>
 </div>
 <br>
-<div id="configGitDiv">
-    Git config placeholder
-</div>
-<div>
-    <button onclick="getCurrentGitConfig()" type="submit">Get current config</button>
-    <button onclick="getNewGitConfig()" type="submit">Get new config from git</button>
-</div>
 </body>
 <script src="/js/functions.js" type="text/javascript"></script>
 </html>

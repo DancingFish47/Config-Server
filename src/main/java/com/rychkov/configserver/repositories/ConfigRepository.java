@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface ConfigRepository extends MongoRepository<Config, Integer> {
     Optional<Config> findByIdOrderByConfigVersionDesc(String configId);
+
     List<Config> findAll();
 }

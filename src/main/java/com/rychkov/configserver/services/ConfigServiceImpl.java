@@ -1,5 +1,7 @@
 package com.rychkov.configserver.services;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.rychkov.configserver.dtos.ConfigDto;
 import com.rychkov.configserver.exceptions.ConfigException;
 import com.rychkov.configserver.entities.Config;
@@ -21,54 +23,45 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
 public class ConfigServiceImpl implements ConfigService {
     private final ConfigRepository configRepository;
-    private Config cachedDbConfig;
-    private Config cachedGitConfig;
-    @Autowired
-    private RestTemplate restTemplate;
-
-    private final static String GIT_CONFIG_URL = "https://raw.githubusercontent.com/DancingFish47/Config-Server/master/config.txt";
-
-    @Bean
-    @ConditionalOnMissingBean
-    public RestTemplate restClientTemplate(RestTemplateBuilder builder) {
-        return builder.build();
-    }
+    private Cache<String, Config> dbCache;
+    private Cache<String, Config> gitCache;
 
     @Override
     public ConfigDto getCurrentDbConfig(String configId) {
-        if (cachedDbConfig != null) return ConfigDto.builder().config(cachedDbConfig).error(false).build();
-        else throw new ConfigException("Cached db config not found!");
+        if (dbCache != null) {
+            Config config = dbCache.getIfPresent(configId);
+            if (config != null) {
+                return ConfigDto.builder().error(false).config(config).build();
+            } else {
+                throw new ConfigException("Cached db config not found!");
+            }
+        } else throw new ConfigException("Cached db config not found!");
     }
 
     @Override
     public ConfigDto getNewDbConfig(String configId) {
         Optional<Config> optionalConfig = configRepository.findByIdOrderByConfigVersionDesc(configId);
         if (optionalConfig.isPresent()) {
-            cachedDbConfig = optionalConfig.get();
-            return ConfigDto.builder().config(cachedDbConfig).error(false).build();
+            saveDbCache(optionalConfig.get());
+            return ConfigDto.builder().config(optionalConfig.get()).error(false).build();
         } else throw new ConfigException("Db config not found!");
     }
 
-    @Override
-    public ConfigDto getCurrentGitConfig() {
-        if (cachedGitConfig != null) return ConfigDto.builder().config(cachedGitConfig).error(false).build();
-        else throw new ConfigException("Cached git config not found!");
+
+    private void saveDbCache(Config config) {
+        if (dbCache == null) {
+            dbCache = Caffeine.newBuilder()
+                    .expireAfterWrite(1, TimeUnit.MINUTES)
+                    .maximumSize(100)
+                    .build();
+        }
+        dbCache.put(config.getId(), config);
     }
 
-    @Override
-    public ConfigDto getNewGitConfig() {
-        String config = restTemplate.getForObject(GIT_CONFIG_URL, String.class);
-        return ConfigDto.builder().error(false).message(config).build();
-    }
-
-    @Scheduled(cron = "${scheduled.cron}")
-    public void clearCachedConfig() {
-        cachedDbConfig = null;
-        cachedGitConfig = null;
-    }
 }

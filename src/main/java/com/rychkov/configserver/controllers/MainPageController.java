@@ -34,16 +34,5 @@ public class MainPageController {
     public ConfigDto getNewDbConfig(@RequestBody String configId) {
         return configService.getNewDbConfig(configId);
     }
-
-    @RequestMapping(value = "/getCurrentGitConfig", method = RequestMethod.POST)
-    @ResponseBody
-    public ConfigDto getCurrentGitConfig() {
-        return configService.getCurrentGitConfig();
-    }
-
-    @RequestMapping(value = "/getNewGitConfig", method = RequestMethod.POST)
-    @ResponseBody
-    public ConfigDto getNewGitConfig() {
-        return configService.getNewGitConfig();
-    }
+    
 }

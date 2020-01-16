@@ -35,37 +35,3 @@ async function getNewDbConfig(configId){
    }
 }
 
-async function getNewGitConfig(){
-    let call = await fetch("/getNewGitConfig", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        }
-    });
-    let result = await call.json();
-
-    if(result.error){
-         document.getElementById("configGitDiv").innerHTML = result.message;
-       } else {
-         document.getElementById("configGitDiv").innerHTML = result.config.id + ' ' + result.config.applicationName + ' ' + result.config.configVersion;
-       }
-
-}
-
-async function getCurrentGitConfig(){
-    let call = await fetch("/getCurrentGitConfig", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-    });
-    let result = await call.json();
-
-    if(result.error){
-         document.getElementById("configGitDiv").innerHTML = result.message;
-       } else {
-         document.getElementById("configGitDiv").innerHTML = result.config.id + ' ' + result.config.applicationName + ' ' + result.config.configVersion;
-       }
-}
